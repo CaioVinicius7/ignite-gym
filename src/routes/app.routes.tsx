@@ -25,15 +25,17 @@ export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
 export function AppRoutes() {
-	const { sizes } = useTheme();
+	const { sizes, colors } = useTheme();
 
-	const iconsSizes = sizes["6"];
+	const iconsSizes = sizes[6];
 
 	return (
 		<Navigator
 			screenOptions={{
 				headerShown: false,
-				tabBarShowLabel: false
+				tabBarShowLabel: false,
+				tabBarActiveTintColor: colors.green[500],
+				tabBarInactiveTintColor: colors.gray[200]
 			}}
 		>
 			<Screen
@@ -45,6 +47,7 @@ export function AppRoutes() {
 					)
 				}}
 			/>
+
 			<Screen
 				name="history"
 				component={History}
