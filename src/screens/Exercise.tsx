@@ -2,8 +2,8 @@ import { Center, Text } from "native-base";
 
 export function Exercise() {
 	return (
-		<Center>
-			<Text>Exercise</Text>
+		<Center flex={1}>
+			<Text color="white">Exercise</Text>
 		</Center>
 	);
 }
