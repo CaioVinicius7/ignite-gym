@@ -1,18 +1,30 @@
-import { Text } from "native-base";
+import { Text, Pressable, IPressableProps } from "native-base";
 
-interface GroupProps {
+interface GroupProps extends IPressableProps {
 	name: string;
 }
 
-export function Group({ name }: GroupProps) {
+export function Group({ name, ...props }: GroupProps) {
 	return (
-		<Text
-			color="gray.200"
-			textTransform="uppercase"
-			fontSize="xs"
-			fontWeight="bold"
+		<Pressable
+			mr={3}
+			w={24}
+			h={10}
+			bg="gray.600"
+			rounded="md"
+			justifyContent="center"
+			alignItems="center"
+			overflow="hidden"
+			{...props}
 		>
-			{name}
-		</Text>
+			<Text
+				color="gray.200"
+				textTransform="uppercase"
+				fontSize="xs"
+				fontWeight="bold"
+			>
+				{name}
+			</Text>
+		</Pressable>
 	);
 }
