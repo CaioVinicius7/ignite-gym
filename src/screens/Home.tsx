@@ -1,28 +1,40 @@
-import { HStack, VStack } from "native-base";
+import { VStack, FlatList } from "native-base";
 
 import { HomeHeader } from "@components/HomeHeader";
 import { Group } from "@components/Group";
 import { useState } from "react";
 
 export function Home() {
-	const [groupSelected, setGroupSelected] = useState("costa");
+	const [groups, setGroups] = useState([
+		"costas",
+		"bíceps",
+		"triceps",
+		"ombro"
+	]);
+	const [groupSelected, setGroupSelected] = useState("costas");
 
 	return (
 		<VStack flex={1}>
 			<HomeHeader />
 
-			<HStack>
-				<Group
-					name="costa"
-					isActive={groupSelected === "costa"}
-					onPress={() => setGroupSelected("costa")}
-				/>
-				<Group
-					name="ombro"
-					isActive={groupSelected === "ombro"}
-					onPress={() => setGroupSelected("ombro")}
-				/>
-			</HStack>
+			<FlatList
+				data={groups}
+				keyExtractor={(item) => item}
+				renderItem={({ item }) => (
+					<Group
+						name={item}
+						isActive={groupSelected === item}
+						onPress={() => setGroupSelected(item)}
+					/>
+				)}
+				horizontal
+				showsHorizontalScrollIndicator={false}
+				_contentContainerStyle={{
+					px: 8
+				}}
+				my={10}
+				maxH={10}
+			/>
 		</VStack>
 	);
 }
