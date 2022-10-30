@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Heading, VStack, SectionList, Text } from "native-base";
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { HistoryCard } from "@components/HistoryCard";
-import { useState } from "react";
 
 export function History() {
 	const [exercises, setExercises] = useState([
@@ -42,6 +42,7 @@ export function History() {
 						hoje?
 					</Text>
 				)}
+				showsVerticalScrollIndicator={false}
 			/>
 		</VStack>
 	);
