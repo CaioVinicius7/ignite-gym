@@ -26,7 +26,11 @@ const signUpSchema = yup.object({
 	password: yup
 		.string()
 		.required("Informe a senha.")
-		.min(6, "A senha deve ter pelo 6 dígitos.")
+		.min(6, "A senha deve ter pelo 6 dígitos."),
+	passwordConfirm: yup
+		.string()
+		.required("Confirme a senha.")
+		.oneOf([yup.ref("password"), null], "A confirmação da senha não confere.")
 });
 
 export function SignUp() {
@@ -141,6 +145,7 @@ export function SignUp() {
 								value={value}
 								onSubmitEditing={handleSubmit(handleSignUp)}
 								returnKeyType="send"
+								errorMessage={errors.passwordConfirm?.message}
 							/>
 						)}
 					/>
