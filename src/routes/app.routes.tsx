@@ -29,7 +29,7 @@ const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 export function AppRoutes() {
 	const { sizes, colors } = useTheme();
 
-	const iconsSizes = sizes[6];
+	const iconsSizes = sizes[7];
 
 	return (
 		<Navigator
