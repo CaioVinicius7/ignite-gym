@@ -77,7 +77,7 @@ export function SignUp() {
 						control={control}
 						name="name"
 						rules={{
-							required: "Informe o nome."
+							required: "Informe o nome"
 						}}
 						render={({ field: { value, onChange } }) => (
 							<Input placeholder="Nome" onChangeText={onChange} value={value} />
@@ -90,7 +90,11 @@ export function SignUp() {
 						control={control}
 						name="email"
 						rules={{
-							required: "Informe o e-mail."
+							required: "Informe o e-mail",
+							pattern: {
+								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+								message: "E-mail inválido"
+							}
 						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
@@ -103,11 +107,13 @@ export function SignUp() {
 						)}
 					/>
 
+					<Text color="white">{errors.email?.message}</Text>
+
 					<Controller
 						control={control}
 						name="password"
 						rules={{
-							required: "Informe a senha."
+							required: "Informe a senha"
 						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
@@ -123,7 +129,7 @@ export function SignUp() {
 						control={control}
 						name="passwordConfirm"
 						rules={{
-							required: "Informe a confirmação de senha."
+							required: "Informe a confirmação de senha"
 						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
