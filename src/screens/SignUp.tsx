@@ -16,7 +16,11 @@ type FormDataProps = {
 };
 
 export function SignUp() {
-	const { control, handleSubmit } = useForm<FormDataProps>({
+	const {
+		control,
+		handleSubmit,
+		formState: { errors }
+	} = useForm<FormDataProps>({
 		defaultValues: {
 			name: "",
 			email: "",
@@ -79,6 +83,8 @@ export function SignUp() {
 							<Input placeholder="Nome" onChangeText={onChange} value={value} />
 						)}
 					/>
+
+					<Text color="white">{errors.name?.message}</Text>
 
 					<Controller
 						control={control}
