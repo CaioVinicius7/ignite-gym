@@ -24,18 +24,28 @@ export function Profile() {
 	);
 
 	async function handleUserPhotoSelect() {
-		const photoSelected = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			quality: 1,
-			aspect: [4, 4],
-			allowsEditing: true
-		});
+		setPhotoIsLoading(true);
 
-		if (photoSelected.cancelled) {
-			return;
+		try {
+			const photoSelected = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				quality: 1,
+				aspect: [4, 4],
+				allowsEditing: true
+			});
+
+			if (photoSelected.cancelled) {
+				return;
+			}
+
+			if (photoSelected.uri) {
+				setUserPhoto(photoSelected.uri);
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setPhotoIsLoading(false);
 		}
-
-		setUserPhoto(photoSelected.uri);
 	}
 
 	return (
