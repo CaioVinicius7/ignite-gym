@@ -48,7 +48,7 @@ export function Profile() {
 				if (photoInfo.size && photoInfo.size / 1024 / 1024 > 3) {
 					return toast.show({
 						title: "Essa imagem é muito grande. Escolha uma de até 3MB.",
-						placement: "top",
+						placement: "bottom",
 						bgColor: "red.500"
 					});
 				}
