@@ -8,8 +8,15 @@ import { Button } from "@components/Button";
 import LogoSvg from "@assets/logo.svg";
 import BackgroundImg from "@assets/background.png";
 
+type FormDataProps = {
+	name: string;
+	email: string;
+	password: string;
+	passwordConfirm: string;
+};
+
 export function SignUp() {
-	const { control, handleSubmit } = useForm();
+	const { control, handleSubmit } = useForm<FormDataProps>();
 
 	const navigation = useNavigation();
 
@@ -17,8 +24,13 @@ export function SignUp() {
 		navigation.goBack();
 	}
 
-	function handleSignUp(data: any) {
-		console.log(data);
+	function handleSignUp({
+		name,
+		email,
+		password,
+		passwordConfirm
+	}: FormDataProps) {
+		console.log({ name, email, password, passwordConfirm });
 	}
 
 	return (
