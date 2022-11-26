@@ -28,38 +28,38 @@ export function Exercise() {
 	}
 
 	return (
-		<ScrollView>
-			<VStack flex={1}>
-				<VStack px={8} pt={12} bg="gray.600">
-					<TouchableOpacity onPress={handleGoBack}>
-						<Icon as={Feather} name="arrow-left" color="green.500" size={6} />
-					</TouchableOpacity>
+		<VStack flex={1}>
+			<VStack px={8} pt={12} bg="gray.600">
+				<TouchableOpacity onPress={handleGoBack}>
+					<Icon as={Feather} name="arrow-left" color="green.500" size={6} />
+				</TouchableOpacity>
 
-					<HStack
-						justifyContent="space-between"
-						mt={4}
-						mb={8}
-						alignItems="center"
+				<HStack
+					justifyContent="space-between"
+					mt={4}
+					mb={8}
+					alignItems="center"
+				>
+					<Heading
+						color="gray.100"
+						fontSize="lg"
+						fontFamily="heading"
+						flexShrink={1}
 					>
-						<Heading
-							color="gray.100"
-							fontSize="lg"
-							fontFamily="heading"
-							flexShrink={1}
-						>
-							Puxada frontal
-						</Heading>
+						Puxada frontal
+					</Heading>
 
-						<HStack alignItems="center">
-							<BodySvg />
+					<HStack alignItems="center">
+						<BodySvg />
 
-							<Text color="gray.200" ml={1} textTransform="capitalize">
-								Costas
-							</Text>
-						</HStack>
+						<Text color="gray.200" ml={1} textTransform="capitalize">
+							Costas
+						</Text>
 					</HStack>
-				</VStack>
+				</HStack>
+			</VStack>
 
+			<ScrollView>
 				<VStack p={8}>
 					<Image
 						source={{
@@ -98,7 +98,7 @@ export function Exercise() {
 						<Button title="Marcar como realizado" />
 					</Box>
 				</VStack>
-			</VStack>
-		</ScrollView>
+			</ScrollView>
+		</VStack>
 	);
 }
