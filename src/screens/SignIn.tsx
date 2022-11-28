@@ -44,10 +44,8 @@ export function SignIn() {
 		}
 	});
 
-	function handleSignIn({ email, password }: FormDataProps) {
-		signIn(email, password);
-
-		console.log({ email, password });
+	async function handleSignIn({ email, password }: FormDataProps) {
+		await signIn(email, password);
 	}
 
 	function handleNewAccount() {
