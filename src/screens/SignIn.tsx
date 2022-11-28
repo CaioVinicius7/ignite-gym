@@ -1,4 +1,12 @@
-import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
+import {
+	VStack,
+	Image,
+	Text,
+	Center,
+	Heading,
+	ScrollView,
+	useToast
+} from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +15,8 @@ import * as yup from "yup";
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
 import { useAuth } from "@hooks/useAuth";
+
+import { AppError } from "@utils/AppError";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
@@ -32,6 +42,8 @@ export function SignIn() {
 
 	const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
+	const toast = useToast();
+
 	const {
 		control,
 		handleSubmit,
@@ -45,7 +57,21 @@ export function SignIn() {
 	});
 
 	async function handleSignIn({ email, password }: FormDataProps) {
-		await signIn(email, password);
+		try {
+			await signIn(email, password);
+		} catch (error) {
+			const isAppError = error instanceof AppError;
+
+			const title = isAppError
+				? error.message
+				: "Não foi possível entrar. Tente novamente mais tarde.";
+
+			toast.show({
+				title,
+				placement: "top",
+				bgColor: "red.500"
+			});
+		}
 	}
 
 	function handleNewAccount() {
