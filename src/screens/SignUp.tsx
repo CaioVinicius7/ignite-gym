@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+import axios from "axios";
 import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
@@ -57,13 +59,19 @@ export function SignUp() {
 	}
 
 	async function handleSignUp({ name, email, password }: FormDataProps) {
-		const response = await api.post("/users", {
-			name,
-			email,
-			password
-		});
+		try {
+			const response = await api.post("/users", {
+				name,
+				email,
+				password
+			});
 
-		console.log(response.data);
+			console.log(response.data);
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				Alert.alert(error.response?.data.message);
+			}
+		}
 	}
 
 	return (
