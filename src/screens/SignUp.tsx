@@ -15,6 +15,8 @@ import * as yup from "yup";
 
 import { api } from "@services/api";
 
+import { useAuth } from "@hooks/useAuth";
+
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
@@ -49,6 +51,12 @@ const signUpSchema = yup.object({
 export function SignUp() {
 	const [isLoading, setIsLoading] = useState(false);
 
+	const navigation = useNavigation();
+
+	const toast = useToast();
+
+	const { signIn } = useAuth();
+
 	const {
 		control,
 		handleSubmit,
@@ -63,10 +71,6 @@ export function SignUp() {
 		}
 	});
 
-	const navigation = useNavigation();
-
-	const toast = useToast();
-
 	function handleGoBack() {
 		navigation.goBack();
 	}
@@ -75,14 +79,16 @@ export function SignUp() {
 		try {
 			setIsLoading(true);
 
-			const response = await api.post("/users", {
+			await api.post("/users", {
 				name,
 				email,
 				password
 			});
 
-			console.log(response.data);
+			await signIn(email, password);
 		} catch (error) {
+			setIsLoading(false);
+
 			const isAppError = error instanceof AppError;
 
 			const title = isAppError
@@ -94,8 +100,6 @@ export function SignUp() {
 				placement: "top",
 				bgColor: "red.500"
 			});
-		} finally {
-			setIsLoading(false);
 		}
 	}
 
