@@ -1,19 +1,19 @@
 import axios from "axios";
 
+import { AppError } from "@utils/AppError";
+
 const api = axios.create({
 	baseURL: "http://192.168.0.137:3333"
 });
 
 api.interceptors.response.use(
-	(response) => {
-		console.log("INTERCEPTOR RESPONSE:", response);
-
-		return response;
-	},
+	(response) => response,
 	(error) => {
-		console.log("INTERCEPTOR RESPONSE ERROR:", error);
+		if (error.response && error.response.data) {
+			return Promise.reject(new AppError(error.response.data.message));
+		}
 
-		return Promise.reject(error);
+		return Promise.reject(new AppError(error));
 	}
 );
 
