@@ -3,6 +3,7 @@ import { createContext, ReactNode, useState } from "react";
 import { UserDTO } from "@dtos/UserDTO";
 export interface AuthContextDataProps {
 	user: UserDTO;
+	signIn: (email: string, password: string) => void;
 }
 
 interface AuthContextProviderProps {
@@ -21,10 +22,20 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 		avatar: "caio.png"
 	});
 
+	function signIn(email: string, password: string) {
+		setUser({
+			id: "",
+			name: "",
+			email,
+			avatar: ""
+		});
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
-				user
+				user,
+				signIn
 			}}
 		>
 			{children}
