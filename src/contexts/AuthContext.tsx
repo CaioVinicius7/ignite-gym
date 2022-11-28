@@ -1,3 +1,10 @@
 import { createContext } from "react";
 
-export const AuthContext = createContext({});
+import { UserDTO } from "@dtos/UserDTO";
+export interface AuthContextDataProps {
+	user: UserDTO;
+}
+
+export const AuthContext = createContext<AuthContextDataProps>(
+	{} as AuthContextDataProps
+);
