@@ -1,5 +1,4 @@
-import { Alert } from "react-native";
-import axios from "axios";
+import { useState } from "react";
 import {
 	VStack,
 	Image,
@@ -48,6 +47,8 @@ const signUpSchema = yup.object({
 });
 
 export function SignUp() {
+	const [isLoading, setIsLoading] = useState(false);
+
 	const {
 		control,
 		handleSubmit,
@@ -72,6 +73,8 @@ export function SignUp() {
 
 	async function handleSignUp({ name, email, password }: FormDataProps) {
 		try {
+			setIsLoading(true);
+
 			const response = await api.post("/users", {
 				name,
 				email,
@@ -91,6 +94,8 @@ export function SignUp() {
 				placement: "top",
 				bgColor: "red.500"
 			});
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
@@ -184,6 +189,7 @@ export function SignUp() {
 					<Button
 						title="Criar e acessar"
 						onPress={handleSubmit(handleSignUp)}
+						isLoading={isLoading}
 					/>
 				</Center>
 
