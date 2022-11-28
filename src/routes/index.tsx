@@ -10,7 +10,7 @@ export function Routes() {
 
 	const { user } = useAuth();
 
-	console.log("USUÁRIO LOGADO => ", user);
+	console.log("USUÁRIO LOGADO => ", JSON.stringify(user, null, 2));
 
 	const theme = DefaultTheme;
 
