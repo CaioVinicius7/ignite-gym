@@ -19,7 +19,7 @@ export function Home() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [groups, setGroups] = useState<string[]>([]);
 	const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
-	const [groupSelected, setGroupSelected] = useState("");
+	const [groupSelected, setGroupSelected] = useState("antebraço");
 
 	const toast = useToast();
 
@@ -75,6 +75,8 @@ export function Home() {
 		}
 	}
 
+	const noExerciseInCurrentGroup = exercises.length === 0;
+
 	useEffect(() => {
 		fetchGroups();
 	}, []);
@@ -113,15 +115,16 @@ export function Home() {
 
 			{isLoading ? (
 				<Loading />
-			) : !groupSelected ? (
-				<Heading
+			) : noExerciseInCurrentGroup ? (
+				<Text
 					color="gray.200"
 					fontSize="md"
-					fontFamily="heading"
+					fontFamily="body"
 					textAlign="center"
+					px={8}
 				>
-					Selecione um grupo muscular para ver seus exercícios.
-				</Heading>
+					Parece que você não tem nenhum exercício para esse grupo muscular.
+				</Text>
 			) : (
 				<VStack flex={1} px={8}>
 					<HStack justifyContent="space-between" mb={5}>
