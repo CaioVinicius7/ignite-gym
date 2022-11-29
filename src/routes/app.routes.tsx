@@ -13,11 +13,12 @@ import { Exercise } from "@screens/Exercise";
 import HomeSvg from "../assets/home.svg";
 import HistorySvg from "../assets/history.svg";
 import ProfileSvg from "../assets/profile.svg";
-import { color } from "native-base/lib/typescript/theme/styled-system";
 
 type AppRoutes = {
 	home: undefined;
-	exercise: undefined;
+	exercise: {
+		exerciseId: string;
+	};
 	history: undefined;
 	profile: undefined;
 };
