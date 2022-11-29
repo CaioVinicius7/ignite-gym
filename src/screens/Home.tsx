@@ -19,7 +19,7 @@ export function Home() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [groups, setGroups] = useState<string[]>([]);
 	const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
-	const [groupSelected, setGroupSelected] = useState("costas");
+	const [groupSelected, setGroupSelected] = useState("");
 
 	const toast = useToast();
 
@@ -108,8 +108,18 @@ export function Home() {
 				maxH={10}
 				minH={10}
 			/>
+
 			{isLoading ? (
 				<Loading />
+			) : !groupSelected ? (
+				<Heading
+					color="gray.200"
+					fontSize="md"
+					fontFamily="heading"
+					textAlign="center"
+				>
+					Selecione um grupo muscular para ver seus exercícios.
+				</Heading>
 			) : (
 				<VStack flex={1} px={8}>
 					<HStack justifyContent="space-between" mb={5}>
