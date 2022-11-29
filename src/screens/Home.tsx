@@ -10,11 +10,13 @@ import { ExerciseCard } from "@components/ExerciseCard";
 
 import { api } from "@services/api";
 
+import { ExerciseDTO } from "@dtos/ExerciseDTO";
+
 import { AppError } from "@utils/AppError";
 
 export function Home() {
 	const [groups, setGroups] = useState<string[]>([]);
-	const [exercises, setExercises] = useState([]);
+	const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
 	const [groupSelected, setGroupSelected] = useState("costas");
 
 	const toast = useToast();
@@ -49,7 +51,7 @@ export function Home() {
 		try {
 			const response = await api.get(`/exercises/bygroup/${groupSelected}`);
 
-			console.log(response.data);
+			setExercises(response.data);
 		} catch (error) {
 			const isAppError = error instanceof AppError;
 
@@ -114,7 +116,7 @@ export function Home() {
 
 				<FlatList
 					data={exercises}
-					keyExtractor={(item) => item}
+					keyExtractor={(item) => item.id}
 					renderItem={() => (
 						<ExerciseCard onPress={handleOpenExerciseDetails} />
 					)}
