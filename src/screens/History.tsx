@@ -8,19 +8,11 @@ import { AppError } from "@utils/AppError";
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { HistoryCard } from "@components/HistoryCard";
+import { HistoryByDayDTO } from "@dtos/HistoryByDayDTO";
 
 export function History() {
 	const [isLoading, setIsLoading] = useState(true);
-	const [exercises, setExercises] = useState([
-		{
-			title: "26.08.22",
-			data: ["Puxada frontal", "Remada unilateral"]
-		},
-		{
-			title: "27.08.22",
-			data: ["Puxada frontal"]
-		}
-	]);
+	const [exercises, setExercises] = useState<HistoryByDayDTO[]>([]);
 
 	const toast = useToast();
 
@@ -30,7 +22,7 @@ export function History() {
 
 			const response = await api.get("/history");
 
-			console.log(response.data);
+			setExercises(response.data);
 		} catch (error) {
 			const isAppError = error instanceof AppError;
 
@@ -60,7 +52,7 @@ export function History() {
 
 			<SectionList
 				sections={exercises}
-				keyExtractor={(item) => item}
+				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => <HistoryCard />}
 				renderSectionHeader={({ section }) => (
 					<Heading
