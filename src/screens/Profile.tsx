@@ -11,6 +11,9 @@ import {
 } from "native-base";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { Controller, useForm } from "react-hook-form";
+
+import { useAuth } from "@hooks/useAuth";
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
@@ -19,6 +22,14 @@ import { Button } from "@components/Button";
 
 const PHOTO_SIZE = 33;
 
+type FormDataProps = {
+	name: string;
+	email: string;
+	password: string;
+	oldPassword: string;
+	confirmPassword: string;
+};
+
 export function Profile() {
 	const [photoIsLoading, setPhotoIsLoading] = useState(false);
 	const [userPhoto, setUserPhoto] = useState(
@@ -26,6 +37,15 @@ export function Profile() {
 	);
 
 	const toast = useToast();
+
+	const { user } = useAuth();
+
+	const { control } = useForm<FormDataProps>({
+		defaultValues: {
+			name: user.name,
+			email: user.email
+		}
+	});
 
 	async function handleUserPhotoSelect() {
 		setPhotoIsLoading(true);
@@ -101,9 +121,31 @@ export function Profile() {
 						</Text>
 					</TouchableOpacity>
 
-					<Input placeholder="Nome" bg="gray.600" />
+					<Controller
+						control={control}
+						name="name"
+						render={({ field: { value, onChange } }) => (
+							<Input
+								placeholder="Nome"
+								bg="gray.600"
+								onChangeText={onChange}
+								value={value}
+							/>
+						)}
+					/>
 
-					<Input placeholder="E-mail" bg="gray.600" isDisabled />
+					<Controller
+						control={control}
+						name="email"
+						render={({ field: { value } }) => (
+							<Input
+								placeholder="E-mail"
+								bg="gray.600"
+								value={value}
+								isDisabled
+							/>
+						)}
+					/>
 
 					<Heading
 						color="gray.200"
