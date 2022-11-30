@@ -35,7 +35,7 @@ const signInSchema = yup.object({
 	password: yup
 		.string()
 		.required("Informe a senha.")
-		.min(6, "A senha deve ter pelo 6 dígitos.")
+		.min(6, "A senha deve ter pelo menos 6 dígitos.")
 });
 
 export function SignIn() {

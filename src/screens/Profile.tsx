@@ -27,8 +27,8 @@ const PHOTO_SIZE = 33;
 type FormDataProps = {
 	name: string;
 	email: string;
-	password: string;
 	oldPassword: string;
+	password: string;
 	confirmPassword: string;
 };
 
@@ -36,7 +36,17 @@ const profileSchema = yup.object({
 	name: yup
 		.string()
 		.required("Informe o nome.")
-		.min(3, "O nome precisa ter pelo menos 3 dígitos.")
+		.min(3, "O nome precisa ter pelo menos 3 dígitos."),
+	password: yup
+		.string()
+		.min(6, "A senha deve ter pelo menos 6 dígitos.")
+		.nullable()
+		.transform((value) => (!!value ? value : null)),
+	confirmPassword: yup
+		.string()
+		.nullable()
+		.transform((value) => (!!value ? value : null))
+		.oneOf([yup.ref("password"), null], "A confirmação de senha não confere.")
 });
 
 export function Profile() {
@@ -97,7 +107,7 @@ export function Profile() {
 	}
 
 	async function handleProfileUpdate(data: FormDataProps) {
-		console.log(data);
+		console.log(JSON.stringify(data, null, 2));
 	}
 
 	return (
@@ -186,6 +196,7 @@ export function Profile() {
 								bg="gray.600"
 								onChangeText={onChange}
 								secureTextEntry
+								errorMessage={errors.oldPassword?.message}
 							/>
 						)}
 					/>
@@ -213,7 +224,7 @@ export function Profile() {
 								bg="gray.600"
 								onChangeText={onChange}
 								secureTextEntry
-								errorMessage={errors.oldPassword?.message}
+								errorMessage={errors.confirmPassword?.message}
 							/>
 						)}
 					/>
