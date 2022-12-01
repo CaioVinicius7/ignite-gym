@@ -143,7 +143,12 @@ export function Profile() {
 				});
 			}
 		} catch (error) {
-			console.log(error);
+			toast.show({
+				title:
+					"Ocorreu um erro ao atualizar a imagem. Tente novamente mais tarde.",
+				placement: "top",
+				bgColor: "red.500"
+			});
 		} finally {
 			setPhotoIsLoading(false);
 		}
