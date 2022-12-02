@@ -1,13 +1,21 @@
 import axios, { AxiosInstance } from "axios";
 
 import { AppError } from "@utils/AppError";
-import { storageAuthTokenGet } from "@storage/storageAuthToken";
+import {
+	storageAuthTokenGet,
+	storageAuthTokenSave
+} from "@storage/storageAuthToken";
 
 type signOut = () => void;
 
 type PromiseType = {
 	resolve: (value?: unknown) => void;
 	reject: (reason?: unknown) => void;
+};
+
+type ProcessQueueParams = {
+	error: Error | null;
+	token: string | null;
 };
 
 interface APIInstanceProps extends AxiosInstance {
@@ -20,6 +28,18 @@ const api = axios.create({
 
 let isRefresh = false;
 let failedQueue: Array<PromiseType> = [];
+
+const processQueue = ({ error, token = null }: ProcessQueueParams): void => {
+	failedQueue.forEach((request) => {
+		if (error) {
+			request.reject(error);
+		} else {
+			request.resolve(token);
+		}
+	});
+
+	failedQueue = [];
+};
 
 api.registerInterceptTokenManager = (signOut) => {
 	const interceptTokenManager = api.interceptors.response.use(
@@ -48,7 +68,7 @@ api.registerInterceptTokenManager = (signOut) => {
 							});
 						})
 							.then((token) => {
-								originalRequest.headers.Authorization = `Bearer ${token}`;
+								originalRequest.headers["Authorization"] = `Bearer ${token}`;
 
 								return axios(originalRequest);
 							})
@@ -58,6 +78,40 @@ api.registerInterceptTokenManager = (signOut) => {
 					}
 
 					isRefresh = true;
+
+					return new Promise(async (resolve, reject) => {
+						try {
+							const { data } = await api.post("/sessions/refresh-token", {
+								token: oldToken
+							});
+
+							await storageAuthTokenSave(data.token);
+
+							api.defaults.headers.common[
+								"Authorization"
+							] = `Bearer ${data.token}`;
+
+							originalRequest.headers["Authorization"] = `Bearer ${data.token}`;
+
+							processQueue({
+								error: null,
+								token: data.token
+							});
+
+							resolve(originalRequest);
+						} catch (error: any) {
+							processQueue({
+								error,
+								token: null
+							});
+
+							signOut();
+
+							reject(error);
+						} finally {
+							isRefresh = false;
+						}
+					});
 				}
 
 				signOut();
