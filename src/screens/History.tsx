@@ -1,5 +1,12 @@
 import { useCallback, useState } from "react";
-import { Heading, VStack, SectionList, Text, useToast } from "native-base";
+import {
+	Heading,
+	VStack,
+	SectionList,
+	Text,
+	Center,
+	useToast
+} from "native-base";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { useAuth } from "@hooks/useAuth";
@@ -81,16 +88,15 @@ export function History() {
 							justifyContent: "center"
 						}
 					}
-					ListEmptyComponent={() => (
-						<Text color="gray.100" textAlign="center">
-							Não há exercícios registrados ainda. {"\n"} Vamos fazer exercícios
-							hoje?
-						</Text>
-					)}
 					showsVerticalScrollIndicator={false}
 				/>
 			) : (
-				<></>
+				<Center flex={1}>
+					<Text color="gray.100" textAlign="center">
+						Não há exercícios registrados ainda. {"\n"} Vamos fazer exercícios
+						hoje?
+					</Text>
+				</Center>
 			)}
 		</VStack>
 	);
