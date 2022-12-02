@@ -5,6 +5,11 @@ import { storageAuthTokenGet } from "@storage/storageAuthToken";
 
 type signOut = () => void;
 
+type PromiseType = {
+	resolve: (value?: unknown) => void;
+	reject: (reason?: unknown) => void;
+};
+
 interface APIInstanceProps extends AxiosInstance {
 	registerInterceptTokenManager: (signOut: signOut) => () => void;
 }
@@ -12,6 +17,9 @@ interface APIInstanceProps extends AxiosInstance {
 const api = axios.create({
 	baseURL: process.env.BASE_URL as string
 }) as APIInstanceProps;
+
+let isRefresh = false;
+let failedQueue: Array<PromiseType> = [];
 
 api.registerInterceptTokenManager = (signOut) => {
 	const interceptTokenManager = api.interceptors.response.use(
@@ -29,6 +37,27 @@ api.registerInterceptTokenManager = (signOut) => {
 
 						return Promise.reject(requestError);
 					}
+
+					const originalRequest = requestError.config;
+
+					if (isRefresh) {
+						return new Promise((resolve, reject) => {
+							failedQueue.push({
+								resolve,
+								reject
+							});
+						})
+							.then((token) => {
+								originalRequest.headers.Authorization = `Bearer ${token}`;
+
+								return axios(originalRequest);
+							})
+							.catch((error) => {
+								throw error;
+							});
+					}
+
+					isRefresh = true;
 				}
 
 				signOut();
