@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 import { Heading, VStack, SectionList, Text, useToast } from "native-base";
 import { useFocusEffect } from "@react-navigation/native";
 
+import { useAuth } from "@hooks/useAuth";
+
 import { api } from "@services/api";
 
 import { AppError } from "@utils/AppError";
@@ -17,6 +19,8 @@ export function History() {
 	const [exercises, setExercises] = useState<HistoryByDayDTO[]>([]);
 
 	const toast = useToast();
+
+	const { refreshedToken } = useAuth();
 
 	async function fetchHistory() {
 		try {
@@ -45,7 +49,7 @@ export function History() {
 	useFocusEffect(
 		useCallback(() => {
 			fetchHistory();
-		}, [])
+		}, [refreshedToken])
 	);
 
 	return (
@@ -54,7 +58,7 @@ export function History() {
 
 			{isLoading ? (
 				<Loading />
-			) : (
+			) : exercises?.length ? (
 				<SectionList
 					sections={exercises}
 					keyExtractor={(item) => item.id}
@@ -85,6 +89,8 @@ export function History() {
 					)}
 					showsVerticalScrollIndicator={false}
 				/>
+			) : (
+				<></>
 			)}
 		</VStack>
 	);
